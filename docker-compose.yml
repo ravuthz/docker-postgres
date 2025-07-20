@@ -11,7 +11,7 @@ services:
       POSTGRES_USER: "$DB_USERNAME"
       POSTGRES_PASSWORD: "$DB_PASSWORD"
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
       - .storage/logs/postgresql:/var/log/postgresql
       - .docker/postgres/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
     networks:
@@ -33,5 +33,5 @@ networks:
     driver: bridge
 
 volumes:
-  db_data:
+  postgres_data:
     driver: local
