@@ -16,7 +16,7 @@ services:
       - .storage/logs/postgresql:/var/log/postgresql
       - .docker/postgres/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
     networks:
-      - lottery_net
+      - postgres_net
     command:
       [
         "postgres",
@@ -28,3 +28,7 @@ services:
         "-c log_directory=/var/log/postgresql",
         "-c log_filename=postgresql-%Y-%m-%d_%H%M%S.log",
       ]
+
+networks:
+  postgres_net:
+    driver: bridge
