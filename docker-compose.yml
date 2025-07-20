@@ -1,0 +1,30 @@
+services:
+  postgres:
+    build:
+      context: .docker/php
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "5431:5432"
+    environment:
+      POSTGRES_DB: "$DB_DATABASE"
+      POSTGRES_USER: "$DB_USERNAME"
+      POSTGRES_PASSWORD: "$DB_PASSWORD"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - .storage/logs/postgresql:/var/log/postgresql
+      - .docker/postgres/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
+    networks:
+      - lottery_net
+    command:
+      [
+        "postgres",
+        "-c shared_preload_libraries=pg_stat_statements",
+        "-c pg_stat_statements.track=all",
+        "-c pg_stat_statements.max=10000",
+        "-c pg_stat_statements.save=on",
+        "-c logging_collector=on",
+        "-c log_directory=/var/log/postgresql",
+        "-c log_filename=postgresql-%Y-%m-%d_%H%M%S.log",
+      ]
